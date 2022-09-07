@@ -135,3 +135,18 @@ export const getCities = () => {
 export const getWalkerCities = () => {
     return database.walkerCities.map(walkerCity => ({...walkerCity}))
 }
+
+export const getCitiesForWalker = (walkerId) => {
+    const cities = []
+    for (const walkerCity of database.walkerCities) {
+        if (walkerCity.walkerId === walkerId) {
+            const city = getCityById(walkerCity.cityId)
+            cities.push(city.name)
+        }
+    }
+    return cities
+}
+
+const getCityById = (cityId) => {
+    return database.cities.find(city => city.id === cityId)
+}

@@ -1,44 +1,22 @@
-import { getWalkers, getWalkerCities, getCities } from "./database.js"
-
-const filterWalkerCitiesByWalker = (id) => {
-    let walkerCityIDs = []
-    let walkerCityNames = []
-    for (const walkerCity of walkerCities) {
-        if (walkerCity.walkerId === id) {
-            walkerCityIDs.push(walkerCity.cityId)
-        }
-    }
-    for (const id of walkerCityIDs) {
-        for (const city of cities) {
-            if (city.id === id) {
-                walkerCityNames.push(city.name)
-            }
-        }
-    }
-    return walkerCityNames
-}
+import { getWalkers, getCitiesForWalker } from "./database.js"
 
 document.addEventListener(
     "click",
     (clickEvent) => {
         const itemClicked = clickEvent.target
         if (itemClicked.id.startsWith("walker")) {
-            const walkerId = itemClicked.id.split("--")[1]
-            console.log(walkerId)
+            const walkerId = parseInt(itemClicked.id.split("--")[1])
+            const walkerCities = getCitiesForWalker(walkerId).join(', ')
             for (const walker of walkers) {
-                if (walker.id === parseInt(walkerId)) {
-                    window.alert(`${walker.name} services ${filterWalkerCitiesByWalker(walker.id)}`)
+                if (walker.id === walkerId) {
+                    window.alert(`${walker.name} services ${walkerCities}`)
                 }
             }
         }
     }
 )
 
-
-
 const walkers = getWalkers()
-const walkerCities = getWalkerCities()
-const cities = getCities()
 
 export const Walkers = () => {
 
